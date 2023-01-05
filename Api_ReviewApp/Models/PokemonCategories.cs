@@ -4,6 +4,7 @@
     relationship between pokemon vs category */
     public class PokemonCategories
     {
+        //make a composite key of two, later in datacontext.cs with fluent api
         public int PokemonId { get; set; }
         public int CategoryId { get; set;}
 
