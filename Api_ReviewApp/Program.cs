@@ -1,4 +1,6 @@
 using Api_ReviewApp.Data;
+using Api_ReviewApp.Interfaces;
+using Api_ReviewApp.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,9 @@ builder.Services.AddControllers();
 
 //seed data at the beginning
 builder.Services.AddTransient<Seed>();
+
+//injection for interface
+builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -26,7 +31,7 @@ var app = builder.Build();
 
 //middleware here
 
-//seed before app starts
+//seed before app starts.. call on terminal dotnet run seeddata
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
     SeedData(app);
 

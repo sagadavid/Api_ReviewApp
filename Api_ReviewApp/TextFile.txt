@@ -1,0 +1,20 @@
+﻿
+^^^migration and seeding in web app
+
+0/dont forget to install entityframework tools.. package manager will not get commands, otherwise.
+1/add-migration intial
+2/on powershell.. in the project folder run--> dotnet run seeddata
+
+alternative to this way of seeding is 
+1)
+extensionsformodelbuilder.cs/
+			//data to seed is defined here
+	shopcontext.cs/
+			modelbuilder.seed//data from extension
+			https://github.com/sagadavid/Api_SportShop/blob/6cc46c34b00f210801356e35a115f7169a4afb37/Api_HPlusSport/Models/ShopContext.cs
+2)
+with initializer
+https://github.com/sagadavid/WebAppMVC_MedikalSenter/blob/bbc29d98aca691fa3619f45b7df6a4b9a7945a99/MedikalSenter/Data/MSInitializer.cs
+
+3) *this is the best*
+https://github.com/sagadavid/API_MedikalSenter/blob/4d5fedf71bad1e2c9eb1625c3267c5ff89392434/API_MedikalSenter/Program.cs
