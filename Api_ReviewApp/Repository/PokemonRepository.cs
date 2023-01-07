@@ -1,6 +1,7 @@
 ﻿using Api_ReviewApp.Data;
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api_ReviewApp.Repository
 {
@@ -13,9 +14,38 @@ namespace Api_ReviewApp.Repository
             _datacontext = dataContext;
         }
 
+        public Pokemon GetPokemon(int id)
+        {
+            return _datacontext.Pokemons.Where(p=>p.Id==id).FirstOrDefault();
+        }
+
+        public Pokemon GetPokemon(string name)
+        {
+            return _datacontext.Pokemons.Where(p => p.Name == name).FirstOrDefault();
+        }
+
+        public decimal GetPokemonRating(int pokeId)
+        {
+            //there are many ratings in many reviews
+            var reviews = _datacontext.Reviews.Where(p=>p.Pokemon.Id== pokeId);
+
+            //a rating is average of ratings
+            if (!reviews.Any()) return 0;
+
+            //notice return time is a decimal
+            return ((decimal)reviews.Sum(r=>r.Rating)/reviews.Count());
+
+        }
+
         public ICollection<Pokemon> GetPokemons()
         {
             return _datacontext.Pokemons.OrderBy(p => p.Id).ToList();
+        }
+
+        public bool PokemonExists(int pokeId)
+        {
+            //any returns boolean
+            return _datacontext.Pokemons.Any(p => p.Id == pokeId);
         }
 
     }

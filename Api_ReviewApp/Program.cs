@@ -19,6 +19,9 @@ builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//automapper pack presented with the help of automapper dependency injection pack installed
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 //use sql for database and here is connection string for it
 builder.Services.AddDbContext<DataContext>(options =>
 {
