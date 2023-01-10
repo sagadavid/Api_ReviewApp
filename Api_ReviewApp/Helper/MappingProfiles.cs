@@ -1,5 +1,4 @@
 ﻿using Api_ReviewApp.Dto;
-using Api_ReviewApp.DTO;
 using Api_ReviewApp.Models;
 using AutoMapper;
 
@@ -15,6 +14,10 @@ namespace Api_ReviewApp.Helper
             CreateMap<Pokemon, PokemonDto>();
             CreateMap<Category, CategoryDto>();
             CreateMap<Country, CountryDto>();
+            CreateMap<Owner, OwnerDto>();
+            CreateMap<Review, ReviewDto>();
+            CreateMap<Reviewer, ReviewerDto>();
+            
 
         }
     }

@@ -1,6 +1,5 @@
 ﻿using Api_ReviewApp.Data;
 using Api_ReviewApp.Dto;
-using Api_ReviewApp.DTO;
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
 using Api_ReviewApp.Repository;
@@ -45,7 +44,8 @@ namespace Api_ReviewApp.Controllers
         public IActionResult GetCountryById(int countryId)
         {
             if (!_countryRepository.CountryExists(countryId)) { return NotFound(); }
-            var country = _mapper.Map<CountryDto>(_countryRepository.GetCountryById(countryId));//cant map boolean
+            var country = _mapper.Map<CountryDto>
+                (_countryRepository.GetCountryById(countryId));//cant map boolean
 
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
             
@@ -58,7 +58,8 @@ namespace Api_ReviewApp.Controllers
         public IActionResult GetCountryByOwnerId(int ownerId)
         {
             var country = _mapper
-                    .Map<CountryDto>(_countryRepository.GetCountryByOwnerId(ownerId));
+                    .Map<CountryDto>
+                    (_countryRepository.GetCountryByOwnerId(ownerId));
             if (!ModelState.IsValid) { return BadRequest(); }
             return Ok(country);
         }

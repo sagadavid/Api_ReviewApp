@@ -1,4 +1,4 @@
-﻿namespace Api_ReviewApp.DTO
+﻿namespace Api_ReviewApp.Dto
 {
     public class PokemonDto
     {

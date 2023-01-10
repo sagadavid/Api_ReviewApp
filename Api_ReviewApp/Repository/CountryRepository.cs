@@ -2,6 +2,7 @@
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
 using AutoMapper;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Api_ReviewApp.Repository
@@ -36,7 +37,8 @@ namespace Api_ReviewApp.Repository
         {
             return _datacontext.Owners
                 .Where(o => o.Id == ownerId)
-                .Select(c=>c.Country).FirstOrDefault();
+                .Select(c => c.Country).FirstOrDefault();
+
         }
 
         public ICollection<Owner> GetOwnersByCountryId(int countryId)

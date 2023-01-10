@@ -1,5 +1,4 @@
 ﻿using Api_ReviewApp.Dto;
-using Api_ReviewApp.DTO;
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
 using Api_ReviewApp.Repository;
@@ -29,9 +28,9 @@ namespace Api_ReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetCategories()
         {
-            var categories = _mapper
-                //return a list, otherwise you get problems
-                .Map<List<CategoryDto>>(_categoryRepository.GetCategories());
+            //return a list, otherwise you get problems
+            var categories = _mapper.Map<List<CategoryDto>>
+                (_categoryRepository.GetCategories());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

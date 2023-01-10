@@ -39,13 +39,13 @@ namespace Api_ReviewApp.Repository
 
         public ICollection<Pokemon> GetPokemonByCategory(int categoryId)
         {
-            //because we deal withe nested entity which means ..
-            //a navigational property..
-            //as entity framewaork requered..
+            //because we deal with nested entity which means ..
+            //a navigational property (actually a joning table)..
+            //as entity framewaork required..
             //we need to explicitly show what we ask..
             //and we do that by .select (or include)..
-            //saying.. we are giving id categoryId and asking corresponding pokemon..
-            //because pokemoncategories navigate bothn!!
+            //saying.. we are giving id categoryId and asking corresponding pokemon via joining table..
+            //because pokemoncategories navigate both!!
 
             return _datacontext
                 .PokemonCategories
