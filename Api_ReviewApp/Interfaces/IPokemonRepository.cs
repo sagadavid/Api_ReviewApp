@@ -9,11 +9,11 @@ namespace Api_ReviewApp.Interfaces
          * that a class must implement,
          * without specifying how that behavior is implemented.
          the behaviour is defined in the not-interface class*/
-        ICollection<Pokemon> GetPokemons();
-        Pokemon GetPokemon(int id);
-        Pokemon GetPokemon(string name);
-        decimal GetPokemonRating (int pokeId);
-        bool PokemonExists(int pokeId);
+         ICollection<Pokemon> GetPokemons();
+         Pokemon GetPokemonById (int id);
+         Pokemon GetPokemonByName (string name);
+         decimal GetPokemonRating (int pokeId);
+         bool PokemonExists (int pokeId);
 
     }
 }

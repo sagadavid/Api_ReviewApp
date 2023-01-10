@@ -2,7 +2,7 @@
 {/*
   this is a join table and is a necessity to connect many to many
     relationship between pokemon vs category */
-    public class PokemonCategories
+    public class PokemonCategory
     {
         //make a composite key of two, later in datacontext.cs with fluent api
         public int PokemonId { get; set; }

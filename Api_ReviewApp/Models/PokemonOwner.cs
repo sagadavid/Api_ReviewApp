@@ -3,7 +3,7 @@
     /*
   this is a join table and is a necessity to connect many to many
     relationship between pokemon vs owner */
-    public class PokemonOwners
+    public class PokemonOwner
     {
         public int PokemonId { get; set; }
         public int OwnerId { get; set; }

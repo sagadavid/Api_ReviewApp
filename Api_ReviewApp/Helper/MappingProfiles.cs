@@ -1,4 +1,5 @@
-﻿using Api_ReviewApp.DTO;
+﻿using Api_ReviewApp.Dto;
+using Api_ReviewApp.DTO;
 using Api_ReviewApp.Models;
 using AutoMapper;
 
@@ -10,7 +11,11 @@ namespace Api_ReviewApp.Helper
     {
         public MappingProfiles()
         {
+            //define source and destination map points before using imapper
             CreateMap<Pokemon, PokemonDto>();
+            CreateMap<Category, CategoryDto>();
+            CreateMap<Country, CountryDto>();
+
         }
     }
 }

@@ -14,39 +14,46 @@ namespace Api_ReviewApp.Repository
             _datacontext = dataContext;
         }
 
-        public Pokemon GetPokemon(int id)
+        public Pokemon GetPokemonById (int id)
         {
-            return _datacontext.Pokemons.Where(p=>p.Id==id).FirstOrDefault();
+            return _datacontext.Pokemon
+                .Where(p=>p.Id==id).FirstOrDefault();
         }
 
-        public Pokemon GetPokemon(string name)
+        public Pokemon GetPokemonByName (string name)
         {
-            return _datacontext.Pokemons.Where(p => p.Name == name).FirstOrDefault();
+            return _datacontext.Pokemon
+                .Where(p => p.Name == name).FirstOrDefault();
         }
 
-        public decimal GetPokemonRating(int pokeId)
+        public decimal GetPokemonRating (int pokeId)
         {
             //there are many ratings in many reviews
-            var reviews = _datacontext.Reviews.Where(p=>p.Pokemon.Id== pokeId);
+            var reviews = _datacontext.Reviews
+                .Where(p=>p.Pokemon.Id== pokeId);
 
             //a rating is average of ratings
             if (!reviews.Any()) return 0;
 
             //notice return time is a decimal
-            return ((decimal)reviews.Sum(r=>r.Rating)/reviews.Count());
+            return ((decimal)reviews
+                .Sum(r=>r.Rating)/reviews.Count());
 
         }
 
         public ICollection<Pokemon> GetPokemons()
         {
-            return _datacontext.Pokemons.OrderBy(p => p.Id).ToList();
+            return _datacontext.Pokemon
+                .OrderBy(p => p.Id).ToList();
         }
 
         public bool PokemonExists(int pokeId)
         {
             //any returns boolean
-            return _datacontext.Pokemons.Any(p => p.Id == pokeId);
+            return _datacontext.Pokemon
+                .Any(p => p.Id == pokeId);
         }
 
+     
     }
 }

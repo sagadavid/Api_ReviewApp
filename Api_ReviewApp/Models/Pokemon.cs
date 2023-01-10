@@ -8,8 +8,8 @@
 
         // has many
         public ICollection<Review> Reviews { get; set; }
-        public ICollection<PokemonOwners> PokemonOwners { get; set; }
-        public ICollection<PokemonCategories> PokemonCategories { get; set; }
+        public ICollection<PokemonOwner> PokemonOwners { get; set; }
+        public ICollection<PokemonCategory> PokemonCategories { get; set; }
 
     }
 }

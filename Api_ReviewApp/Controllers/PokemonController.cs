@@ -24,10 +24,12 @@ namespace Api_ReviewApp.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type=typeof(IEnumerable<Pokemon>))]
+        [ProducesResponseType(400)]
         public IActionResult GetPokemons()
         {
-            //automapper used for get list call
-            var pokemons = _mapper.Map<List<PokemonDto>>(_pokemonRepository.GetPokemons());
+            //automapper used to get list call
+            var pokemons = _mapper
+                .Map<List<PokemonDto>>(_pokemonRepository.GetPokemons());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -36,18 +38,19 @@ namespace Api_ReviewApp.Controllers
         }
 
         [HttpGet("{pokeId}")]
-        [ProducesResponseType(200, Type=typeof(Pokemon))]
+        [ProducesResponseType(200, Type=typeof(Category))]
         [ProducesResponseType(400)]
         public IActionResult GetPokemon(int pokeId) 
         {
         if (!_pokemonRepository.PokemonExists(pokeId)) { return NotFound(); }
-        var pokemon = _mapper.Map<PokemonDto>(_pokemonRepository.GetPokemon(pokeId));
+        var pokemon = _mapper
+                .Map<PokemonDto>(_pokemonRepository.GetPokemonById(pokeId));
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
         return Ok(pokemon);
         }
 
         [HttpGet("{pokeId}/rating")]
-        [ProducesResponseType(200, Type = typeof(Pokemon))]
+        [ProducesResponseType(200, Type = typeof(Category))]
         [ProducesResponseType(400)]
         public IActionResult GetPokemonRating(int pokeId)
         {

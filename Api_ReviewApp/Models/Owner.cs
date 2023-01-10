@@ -11,6 +11,6 @@
         public Country Country { get; set; }
 
         //has many
-        public ICollection<PokemonOwners> PokemonOwners { get; set; }
+        public ICollection<PokemonOwner> PokemonOwners { get; set; }
     }
 }

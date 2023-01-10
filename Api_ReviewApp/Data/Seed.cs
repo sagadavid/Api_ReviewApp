@@ -10,23 +10,26 @@ namespace Api_ReviewApp.Data
             this.dataContext = context;
         }
         public void SeedDataContext()
+    
         {
             if (!dataContext.PokemonOwners.Any())
             {
-                var pokemonOwners = new List<PokemonOwners>()
+                var pokemonOwners = new List<PokemonOwner>()
+//cause pokemonowners is a combination table of owners and pokemons,
+//need to create both with inner properties' and correspinding data
                 {
-                    //cause pokemonowners is a combination table of owners and pokemons,
-                    //need to create both with inner properties' and correspinding data
-                    new PokemonOwners()
+                    new PokemonOwner()
                     {
                         Pokemon = new Pokemon()
                         {
                             Name = "Pikachu",
                             BirthDate = new DateTime(1903,1,1),
-                            PokemonCategories = new List<PokemonCategories>()
+                            PokemonCategories = new List<PokemonCategory>()
+                            
                             {
-                                new PokemonCategories { Category = new Category() { Name = "Electric"}}
+                                new PokemonCategory { Category = new Category() { Name = "Electric"}}
                             },
+
                             Reviews = new List<Review>()
                             {
                                 new Review { Title="Pikachu",Text = "Pickahu is the best pokemon, because it is electric", Rating = 5,
@@ -37,6 +40,7 @@ namespace Api_ReviewApp.Data
                                 Reviewer = new Reviewer(){ FirstName = "Jessica", LastName = "McGregor" } },
                             }
                         },
+
                         Owner = new Owner()
                         {
                             FirstName = "Jack",
@@ -48,15 +52,15 @@ namespace Api_ReviewApp.Data
                             }
                         }
                     },
-                    new PokemonOwners()
+                    new PokemonOwner()
                     {
                         Pokemon = new Pokemon()
                         {
                             Name = "Squirtle",
                             BirthDate = new DateTime(1903,1,1),
-                            PokemonCategories = new List<PokemonCategories>()
+                            PokemonCategories = new List<PokemonCategory>()
                             {
-                                new PokemonCategories { Category = new Category() { Name = "Water"}}
+                                new PokemonCategory { Category = new Category() { Name = "Water"}}
                             },
                             Reviews = new List<Review>()
                             {
@@ -79,15 +83,15 @@ namespace Api_ReviewApp.Data
                             }
                         }
                     },
-                                    new PokemonOwners()
+                                    new PokemonOwner()
                     {
                         Pokemon = new Pokemon()
                         {
                             Name = "Venasuar",
                             BirthDate = new DateTime(1903,1,1),
-                            PokemonCategories = new List<PokemonCategories>()
+                            PokemonCategories = new List<PokemonCategory>()
                             {
-                                new PokemonCategories { Category = new Category() { Name = "Leaf"}}
+                                new PokemonCategory { Category = new Category() { Name = "Leaf"}}
                             },
                             Reviews = new List<Review>()
                             {

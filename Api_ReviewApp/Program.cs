@@ -12,15 +12,17 @@ builder.Services.AddControllers();
 //seed data at the beginning
 builder.Services.AddTransient<Seed>();
 
-//injection for interface
+//automapper pack presented with the help of automapper dependency injection pack installed
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+//injection for interfaces
 builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-//automapper pack presented with the help of automapper dependency injection pack installed
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //use sql for database and here is connection string for it
 builder.Services.AddDbContext<DataContext>(options =>

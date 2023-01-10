@@ -36,7 +36,7 @@ namespace Api_ReviewApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Api_ReviewApp.Models.Country", b =>
@@ -103,10 +103,10 @@ namespace Api_ReviewApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pokemons");
+                    b.ToTable("Pokemon");
                 });
 
-            modelBuilder.Entity("Api_ReviewApp.Models.PokemonCategories", b =>
+            modelBuilder.Entity("Api_ReviewApp.Models.PokemonCategory", b =>
                 {
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
@@ -121,7 +121,7 @@ namespace Api_ReviewApp.Migrations
                     b.ToTable("PokemonCategories");
                 });
 
-            modelBuilder.Entity("Api_ReviewApp.Models.PokemonOwners", b =>
+            modelBuilder.Entity("Api_ReviewApp.Models.PokemonOwner", b =>
                 {
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
@@ -202,7 +202,7 @@ namespace Api_ReviewApp.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Api_ReviewApp.Models.PokemonCategories", b =>
+            modelBuilder.Entity("Api_ReviewApp.Models.PokemonCategory", b =>
                 {
                     b.HasOne("Api_ReviewApp.Models.Category", "Category")
                         .WithMany("PokemonCategories")
@@ -221,7 +221,7 @@ namespace Api_ReviewApp.Migrations
                     b.Navigation("Pokemon");
                 });
 
-            modelBuilder.Entity("Api_ReviewApp.Models.PokemonOwners", b =>
+            modelBuilder.Entity("Api_ReviewApp.Models.PokemonOwner", b =>
                 {
                     b.HasOne("Api_ReviewApp.Models.Owner", "Owner")
                         .WithMany("PokemonOwners")

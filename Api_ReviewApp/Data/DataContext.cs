@@ -11,42 +11,42 @@ namespace Api_ReviewApp.Data
         }
     
     //set tables into databasels asin correspondance of models
-    public DbSet<Pokemon> Pokemons { get; set; }
+    public DbSet<Pokemon> Pokemon { get; set; }
     public DbSet<Country> Countries { get; set; }
     public DbSet<Owner> Owners { get; set; }
     public DbSet<Category> Categories { get; set; }
-public DbSet<Review> Reviews { get; set; }
-public DbSet<Reviewer> Reviewers { get; set; }
-public DbSet<PokemonCategories> PokemonCategories { get; set; }
-public DbSet<PokemonOwners> PokemonOwners { get; set; }
+    public DbSet<Review> Reviews { get; set; }
+    public DbSet<Reviewer> Reviewers { get; set; }
+    public DbSet<PokemonCategory> PokemonCategories { get; set; }
+    public DbSet<PokemonOwner> PokemonOwners { get; set; }
 
         //some customization of your tables esp on relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             //many to many's
             //tell composite key to entityframework
-            modelBuilder.Entity<PokemonCategories>()
+            modelBuilder.Entity<PokemonCategory>()
                 .HasKey(pc => new { pc.PokemonId, pc.CategoryId });
             //tell joining table relations to establish many to many 
-            modelBuilder.Entity<PokemonCategories>()
+            modelBuilder.Entity<PokemonCategory>()
                 .HasOne(p => p.Pokemon)
                 .WithMany(p => p.PokemonCategories)
                 .HasForeignKey(p => p.PokemonId);
-            modelBuilder.Entity<PokemonCategories>()
+            modelBuilder.Entity<PokemonCategory>()
               .HasOne(p => p.Category)
               .WithMany(p => p.PokemonCategories)
               .HasForeignKey(p => p.CategoryId);
 
             //many to many's
             //tell composite key to entityframework
-            modelBuilder.Entity<PokemonOwners>()
+            modelBuilder.Entity<PokemonOwner>()
                 .HasKey(pc => new { pc.PokemonId, pc.OwnerId });
             //tell joining table relations to establish many to many 
-            modelBuilder.Entity<PokemonOwners>()
+            modelBuilder.Entity<PokemonOwner>()
                 .HasOne(p => p.Pokemon)
                 .WithMany(p => p.PokemonOwners)
                 .HasForeignKey(p => p.PokemonId);
-            modelBuilder.Entity<PokemonOwners>()
+            modelBuilder.Entity<PokemonOwner>()
               .HasOne(p => p.Owner)
               .WithMany(p => p.PokemonOwners)
               .HasForeignKey(p => p.OwnerId);
