@@ -38,7 +38,6 @@ namespace Api_ReviewApp.Repository
             //notice return time is a decimal
             return ((decimal)reviews
                 .Sum(r=>r.Rating)/reviews.Count());
-
         }
 
         public ICollection<Pokemon> GetPokemons()
@@ -54,6 +53,6 @@ namespace Api_ReviewApp.Repository
                 .Any(p => p.Id == pokeId);
         }
 
-     
+
     }
 }

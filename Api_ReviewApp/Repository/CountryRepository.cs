@@ -21,6 +21,12 @@ namespace Api_ReviewApp.Repository
                 .Countries.Any(c=>c.Id==countryId);
         }
 
+        public bool CreateCountry(Country country)
+        {
+            _datacontext.Add(country);
+            return Save();
+        }
+
         public ICollection<Country> GetCountries()
         {
             return _datacontext
@@ -46,6 +52,12 @@ namespace Api_ReviewApp.Repository
             return _datacontext
                 .Owners
                 .Where(c => c.Country.Id == countryId).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _datacontext.SaveChanges();
+            return saved > 0;
         }
     }
 }

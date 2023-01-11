@@ -10,5 +10,7 @@ namespace Api_ReviewApp.Interfaces
         Country GetCountryByOwnerId(int ownerId);
         ICollection<Owner> GetOwnersByCountryId(int countryId);
         bool CountryExists(int countryId);
+        bool CreateCountry(Country country);
+        bool Save();
     }
 }

@@ -64,7 +64,34 @@ namespace Api_ReviewApp.Controllers
             return Ok(country);
         }
 
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCountry([FromBody] CountryDto creatNyCountry)
+        {
+            if (creatNyCountry == null) return BadRequest();
 
+            var country = _countryRepository.GetCountries()
+                    .Where(c => c.Name.Trim().ToUpper() == creatNyCountry.Name.Trim().ToUpper()).FirstOrDefault();
+
+            if (country != null)
+            {
+                ModelState.AddModelError("", "already exists..not a new country");
+                return StatusCode(442, ModelState);
+            }
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            
+            var mapNyCountry = _mapper.Map<Country>(creatNyCountry);
+
+            if (!_countryRepository.CreateCountry(mapNyCountry))
+            {
+                ModelState.AddModelError("", "failed saving counry");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("ny country created");
+        }
 
 
 

@@ -1,6 +1,7 @@
 ﻿using Api_ReviewApp.Data;
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
+using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 
 namespace Api_ReviewApp.Repository
 {
@@ -11,6 +12,12 @@ namespace Api_ReviewApp.Repository
         public OwnerRepository(DataContext dataContext)
         {
             _datacontext = dataContext;
+        }
+
+        public bool CreateOwner(Owner owner)
+        {
+            _datacontext.Add(owner);
+            return Save();
         }
 
         public Owner GetOwner(int ownerId)
@@ -43,6 +50,22 @@ namespace Api_ReviewApp.Repository
         public bool OwnerExists(int ownerId)
         {
             return _datacontext.Owners.Any(o=>o.Id==ownerId);
+        }
+
+        public bool Save()
+        {
+            var saved =_datacontext.SaveChanges();
+            //error#03 above: 
+            //SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint
+            //"FK_Owners_Countries_CountryId". The conflict occurred in database "reviewappdb",
+            //table "dbo.Countries", column 'Id'.The statement has been terminated.
+            
+            //solution#03:'cause there is fk issue go check data context model snapshot..
+            //there is obvious that an owner cant exist/and tehrefore created without a countryId
+            //so.. the solution idea is to carry along country id into creation process of owner.
+            //to get that data in.. follow steps with this code solution#03
+
+            return saved >0;
         }
     }
 }

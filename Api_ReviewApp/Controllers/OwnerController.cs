@@ -1,6 +1,7 @@
 ﻿using Api_ReviewApp.Dto;
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
+using Api_ReviewApp.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,14 @@ namespace Api_ReviewApp.Controllers
     public class OwnerController : Controller
     {
         private readonly IOwnerRepository _ownerRepository;
+        //solution#03 add country into play (for post method)
+        private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
 
-        public OwnerController(IOwnerRepository ownerRepository, IMapper mapper)
+        public OwnerController(IOwnerRepository ownerRepository, ICountryRepository countryRepository, IMapper mapper)
         {
             _ownerRepository = ownerRepository;
+            _countryRepository = countryRepository;
             _mapper = mapper;
         }
 
@@ -72,5 +76,44 @@ namespace Api_ReviewApp.Controllers
         //    if (!ModelState.IsValid) return BadRequest(ModelState);
         //    return Ok(owner);
         //}
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCountry
+            (//solution#03 get country id from query
+            [FromQuery] int countryId, [FromBody] OwnerDto creatNyOwner)
+        {
+            if (creatNyOwner == null) return BadRequest();
+
+            var country = _ownerRepository.GetOwners()
+                    .Where(c => c.LastName.Trim().ToUpper() 
+                    == creatNyOwner.LastName.Trim().ToUpper()).FirstOrDefault();
+
+            if (country != null)
+            {
+                ModelState.AddModelError("", "already exists..not a new owner");
+                return StatusCode(442, ModelState);
+            }
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+
+            var mapNyOwner = _mapper.Map<Owner>(creatNyOwner);
+            
+            //solution#03 map countryId to owner's country
+            //by enabling getcountrybyid method of countryrepository
+            //mapper can catch country details, 'cause this controller
+            //has constructer injection of icountryrepository
+            mapNyOwner.Country = _countryRepository.GetCountryById(countryId);
+
+
+            if (!_ownerRepository.CreateOwner(mapNyOwner))
+            {
+                ModelState.AddModelError("", "failed saving ny owner");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("ny owner created");
+        }
     }
 }

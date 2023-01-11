@@ -1,4 +1,6 @@
-﻿namespace Api_ReviewApp.Dto
+﻿using Api_ReviewApp.Models;
+
+namespace Api_ReviewApp.Dto
 {
     public class OwnerDto
     {
@@ -6,7 +8,6 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Gym { get; set; }
-        
-        
+
     }
 }
