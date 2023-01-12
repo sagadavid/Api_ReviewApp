@@ -1,6 +1,7 @@
 ﻿using Api_ReviewApp.Dto;
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
+using Api_ReviewApp.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,6 +59,40 @@ namespace Api_ReviewApp.Controllers
             var rating = _pokemonRepository.GetPokemonRating(pokeId);
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
             return Ok(rating);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePokemon(
+            [FromQuery] int ownerId,
+             [FromQuery] int categoryId,
+            [FromBody] PokemonDto createNyPokemon)
+        {
+            //means, if no pokemon input in post method
+            if (createNyPokemon == null) return BadRequest();
+
+            var pokemon = _pokemonRepository.GetPokemons()
+                    .Where(c => c.Name.Trim().ToUpper()
+                    == createNyPokemon.Name.TrimEnd().ToUpper()).FirstOrDefault();
+
+            if (pokemon != null)
+            {
+                ModelState.AddModelError("", "already exists..not a new pokemon");
+                return StatusCode(442, ModelState);
+            }
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+
+            var mapNyPokemon = _mapper.Map<Pokemon>(createNyPokemon);
+
+            if (!_pokemonRepository.CreatePokemon(mapNyPokemon,ownerId,categoryId))
+            {
+                ModelState.AddModelError("", "failed saving ny pokemon");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("ny pokemon created");
         }
 
 

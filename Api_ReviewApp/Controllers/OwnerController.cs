@@ -16,7 +16,8 @@ namespace Api_ReviewApp.Controllers
         private readonly ICountryRepository _countryRepository;
         private readonly IMapper _mapper;
 
-        public OwnerController(IOwnerRepository ownerRepository, ICountryRepository countryRepository, IMapper mapper)
+        public OwnerController(IOwnerRepository ownerRepository, 
+            ICountryRepository countryRepository, IMapper mapper)
         {
             _ownerRepository = ownerRepository;
             _countryRepository = countryRepository;
@@ -80,24 +81,26 @@ namespace Api_ReviewApp.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateCountry
+        public IActionResult CreateOwner
             (//solution#03 get country id from query
-            [FromQuery] int countryId, [FromBody] OwnerDto creatNyOwner)
+            [FromQuery] int countryId,
+            [FromBody] OwnerDto creatNyOwner
+            //[FromQuery] OwnerDto creatNyOwner
+            )
         {
             if (creatNyOwner == null) return BadRequest();
 
-            var country = _ownerRepository.GetOwners()
+            var owner = _ownerRepository.GetOwners()
                     .Where(c => c.LastName.Trim().ToUpper() 
-                    == creatNyOwner.LastName.Trim().ToUpper()).FirstOrDefault();
+                    == creatNyOwner.LastName.TrimEnd().ToUpper()).FirstOrDefault();
 
-            if (country != null)
+            if (owner != null)
             {
                 ModelState.AddModelError("", "already exists..not a new owner");
                 return StatusCode(442, ModelState);
             }
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
-
 
             var mapNyOwner = _mapper.Map<Owner>(creatNyOwner);
             
@@ -106,7 +109,6 @@ namespace Api_ReviewApp.Controllers
             //mapper can catch country details, 'cause this controller
             //has constructer injection of icountryrepository
             mapNyOwner.Country = _countryRepository.GetCountryById(countryId);
-
 
             if (!_ownerRepository.CreateOwner(mapNyOwner))
             {

@@ -14,6 +14,42 @@ namespace Api_ReviewApp.Repository
             _datacontext = dataContext;
         }
 
+        public bool CreatePokemon(Pokemon pokemon, int ownerId, int categoryId)
+        {
+            //for den pokemonen er knyttet til disse to, trenger a trekke dem,
+            //saledes blir det mulig a lage/skape en pokemon (ved a lage disse dataene)
+            var pokemonOwnerPerSe = _datacontext.Owners
+                .Where(a=>a.Id==ownerId).FirstOrDefault();
+            var categoryPerSe = _datacontext.Categories
+                .Where(c=>c.Id==categoryId).FirstOrDefault();
+
+            //instead of using auto mapper(to be sure or clear),
+            //hardcoding to create pokemon owner
+            //notice syntax here!
+            var nyPokemonOwner = new PokemonOwner()
+            {
+                //pokemonowner.owner ! peek definition
+                Owner = pokemonOwnerPerSe,
+                Pokemon = pokemon,
+            };
+
+            var nyPokemonCategory = new PokemonCategory()
+            {
+                //pokemoncategory.category ! peek definition
+                Category = categoryPerSe,
+                Pokemon = pokemon,
+            };
+
+            _datacontext.Add(nyPokemonOwner);
+            _datacontext.Add(nyPokemonCategory);
+            _datacontext.Add(pokemon);
+
+            return Save();
+
+
+
+        }
+
         public Pokemon GetPokemonById (int id)
         {
             return _datacontext.Pokemon
@@ -53,6 +89,10 @@ namespace Api_ReviewApp.Repository
                 .Any(p => p.Id == pokeId);
         }
 
-
+        public bool Save()
+        {
+            var saved = _datacontext.SaveChanges();
+            return saved > 0;
+        }
     }
 }
