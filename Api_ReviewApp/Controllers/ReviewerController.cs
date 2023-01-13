@@ -4,6 +4,7 @@ using Api_ReviewApp.Models;
 using Api_ReviewApp.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Metrics;
 
 namespace Api_ReviewApp.Controllers
 {
@@ -66,5 +67,37 @@ namespace Api_ReviewApp.Controllers
 
             return Ok(reviews);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateReviewer([FromBody] ReviewerDto createReviewer)
+        {
+            if (createReviewer == null) return BadRequest(ModelState);
+            var reviewerMatch = _reviewerRepository.GetReviewers()
+                .Where(r => r.LastName.Trim().ToUpper()
+                == createReviewer.LastName.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (reviewerMatch != null)
+            {
+                ModelState.AddModelError("", "already exists..not a new reviewer");
+                return StatusCode(442, ModelState);
+            }
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            //real creation is this.. mapping to reviewer file
+            var mapReviewer = _mapper.Map<Reviewer>(reviewerMatch);
+
+            if (!_reviewerRepository.CreateReviewer(mapReviewer))
+            {
+                ModelState.AddModelError("", "failed saving reviewer");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("ny reviewer created");
+        }
+
+
     }
 }

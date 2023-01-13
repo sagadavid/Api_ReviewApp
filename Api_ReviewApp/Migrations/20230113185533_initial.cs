@@ -10,7 +10,7 @@ namespace Api_ReviewApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -19,7 +19,7 @@ namespace Api_ReviewApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,9 +96,9 @@ namespace Api_ReviewApp.Migrations
                 {
                     table.PrimaryKey("PK_PokemonCategories", x => new { x.PokemonId, x.CategoryId });
                     table.ForeignKey(
-                        name: "FK_PokemonCategories_Category_CategoryId",
+                        name: "FK_PokemonCategories_Categories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Category",
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -200,7 +200,7 @@ namespace Api_ReviewApp.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Owners");

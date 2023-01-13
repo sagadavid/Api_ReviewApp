@@ -1,17 +1,29 @@
 ﻿using Api_ReviewApp.Data;
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
+using AutoMapper;
 
 namespace Api_ReviewApp.Repository
 {
     public class ReviewerRepository : IReviewerRepository
     {
         private readonly DataContext _dataContext;
+        private readonly IMapper _mapper;
 
-        public ReviewerRepository(DataContext dataContext)
+        public ReviewerRepository(DataContext dataContext, IMapper mapper)
         {
             _dataContext = dataContext;
+            _mapper = mapper;
         }
+
+        //'cause there is no one to one relation here, 
+        //we dont need to import any other entity as parameter
+        public bool CreateReviewer(Reviewer reviewer)
+        {
+            _dataContext.Add(reviewer);
+            return Save();
+        }
+
         public Reviewer GetReviewer(int reviewerId)
         {
             return _dataContext.Reviewers
@@ -33,5 +45,11 @@ namespace Api_ReviewApp.Repository
         {
             return _dataContext.Reviewers.Any();
         }
-    }
+
+        public bool Save()
+        {
+            var saved = _dataContext.SaveChanges();
+            return saved > 0 ;
+        }
+}
 }

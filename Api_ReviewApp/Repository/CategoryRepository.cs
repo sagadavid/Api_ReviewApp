@@ -75,5 +75,11 @@ namespace Api_ReviewApp.Repository
         //dont post with id.. delete it just post name of category
         
         }
+
+        public bool UpdateCategory(Category category)
+        {
+            _datacontext.Update(category);
+            return Save();
+        }
     }
 }

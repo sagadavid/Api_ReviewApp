@@ -31,7 +31,6 @@ namespace Api_ReviewApp.Helper
             CreateMap<Reviewer, ReviewerDto>();
             CreateMap<ReviewerDto, Reviewer>();
             
-
         }
     }
 }

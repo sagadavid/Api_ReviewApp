@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api_ReviewApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230109235932_initial")]
+    [Migration("20230113185533_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace Api_ReviewApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Api_ReviewApp.Models.Country", b =>

@@ -36,7 +36,7 @@ namespace Api_ReviewApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Api_ReviewApp.Models.Country", b =>
