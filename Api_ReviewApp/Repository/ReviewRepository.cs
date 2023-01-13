@@ -12,6 +12,13 @@ namespace Api_ReviewApp.Repository
         {
             _dataContext = dataContext;
         }
+
+        public bool CreateReview(Review review)
+        {
+            _dataContext.Add(review);
+            return Save();
+        }
+
         public Review GetReview(int reviewId)
         {
             return _dataContext.Reviews.Where(r => r.Id == reviewId).FirstOrDefault();
@@ -32,6 +39,12 @@ namespace Api_ReviewApp.Repository
         public bool ReviewExists(int reviewId)
         {
             return _dataContext.Reviews.Any();
+        }
+
+        public bool Save()
+        {
+         var saved = _dataContext.SaveChanges();
+            return saved>0;
         }
     }
 }

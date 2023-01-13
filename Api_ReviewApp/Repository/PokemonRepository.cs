@@ -13,7 +13,6 @@ namespace Api_ReviewApp.Repository
         {
             _datacontext = dataContext;
         }
-
         public bool CreatePokemon(Pokemon pokemon, int ownerId, int categoryId)
         {
             //for den pokemonen er knyttet til disse to, trenger a trekke dem,
