@@ -23,6 +23,9 @@ namespace Api_ReviewApp.Data
         //some customization of your tables esp on relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+            //commenting review: define composite key here
+            // //commenting review: define joining tables (for many to many)
+            
             //many to many's
             //tell composite key to entityframework
             modelBuilder.Entity<PokemonCategory>()

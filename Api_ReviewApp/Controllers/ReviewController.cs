@@ -76,7 +76,7 @@ namespace Api_ReviewApp.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreatePokemon(
-            //get check migrationSnapShot and see relations,
+            //get check migrationSnapShot or datacontext and see relations,
             //see what entities are necessary in create/post method
             [FromQuery] int pokemonId,
              [FromQuery] int reviewerId,
