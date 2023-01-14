@@ -2,6 +2,7 @@
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api_ReviewApp.Repository
 {
@@ -17,6 +18,12 @@ namespace Api_ReviewApp.Repository
         public bool CreateOwner(Owner owner)
         {
             _datacontext.Add(owner);
+            return Save();
+        }
+
+        public bool DeleteOwner(Owner owner)
+        {
+            _datacontext.Remove(owner);
             return Save();
         }
 
@@ -66,6 +73,12 @@ namespace Api_ReviewApp.Repository
             //to get that data in.. follow steps with this code solution#03
 
             return saved >0;
+        }
+
+        public bool UpdateOwner(Owner owner)
+        {
+            _datacontext.Update(owner);
+            return Save(); ;
         }
     }
 }

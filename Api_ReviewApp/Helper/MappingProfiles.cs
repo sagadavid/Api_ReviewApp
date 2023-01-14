@@ -28,8 +28,8 @@ namespace Api_ReviewApp.Helper
             CreateMap<Review, ReviewDto>();
             CreateMap<ReviewDto, Review>();
 
-            CreateMap<Reviewer, ReviewerDto>();
-            CreateMap<ReviewerDto, Reviewer>();
+            CreateMap<Commentator, CommentatorDto>();
+            CreateMap<CommentatorDto, Commentator>();
             
         }
     }

@@ -8,7 +8,7 @@
         public int Rating { get; set; }
         
         //relationships.. has one
-        public Reviewer Reviewer { get; set; }
+        public Commentator Commentator { get; set; }
         public Pokemon Pokemon { get; set; }
 
     }

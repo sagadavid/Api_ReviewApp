@@ -14,8 +14,9 @@ namespace Api_ReviewApp.Interfaces
          Pokemon GetPokemonByName (string name);
          decimal GetPokemonRating (int pokeId);
          bool PokemonExists (int pokeId);
-
         bool CreatePokemon (Pokemon pokemon, int ownerId, int categoryId );
+        bool UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon);
+        bool DeletePokemon(Pokemon pokemon);
         bool Save();
     }
 }

@@ -15,12 +15,12 @@ namespace Api_ReviewApp.Controllers
         private readonly IMapper _mapper;
         //see explanation**
         private readonly IPokemonRepository _pokemonRepository;
-        private readonly IReviewerRepository _reviewerRepository;
+        private readonly ICommentatorRepository _CommentatorRepository;
 
         public ReviewController(
             IReviewRepository reviewRepository, 
             IMapper mapper,
-            IReviewerRepository reviewerRepository,
+            ICommentatorRepository CommentatorRepository,
             IPokemonRepository pokemonRepository
 
             )
@@ -28,7 +28,7 @@ namespace Api_ReviewApp.Controllers
             _reviewRepository = reviewRepository;
             _mapper = mapper;
             _pokemonRepository = pokemonRepository;
-            _reviewerRepository = reviewerRepository;
+            _CommentatorRepository = CommentatorRepository;
         }
 
         [HttpGet]
@@ -75,11 +75,11 @@ namespace Api_ReviewApp.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreatePokemon(
+        public IActionResult CreateReview(
             //get check migrationSnapShot or datacontext and see relations,
             //see what entities are necessary in create/post method
             [FromQuery] int pokemonId,
-             [FromQuery] int reviewerId,
+             [FromQuery] int CommentatorId,
             [FromBody] ReviewDto createNyReview)
         {
             if (createNyReview == null) return BadRequest();
@@ -97,13 +97,13 @@ namespace Api_ReviewApp.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             //explanation**
-            //crucial point is that.. -'cause review is in relation with pokemon and reviewer-
+            //crucial point is that.. -'cause review is in relation with pokemon and Commentator-
             //we need to take them into play
             //to do that, we need to reach these two repositories
             //to do that, we need to inject them into cunstroctur or 
             var mapNyReview = _mapper.Map<Review>(createNyReview);
             mapNyReview.Pokemon = _pokemonRepository.GetPokemonById(pokemonId);
-            mapNyReview.Reviewer = _reviewerRepository.GetReviewer(reviewerId);
+            mapNyReview.Commentator = _CommentatorRepository.GetCommentator(CommentatorId);
 
             if (!_reviewRepository.CreateReview(mapNyReview))
             {
@@ -113,6 +113,81 @@ namespace Api_ReviewApp.Controllers
             return Ok("ny review created");
         }
 
+        [HttpPut("{reviewId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateReview(int reviewId, [FromBody] ReviewDto updatedReview)
+        {
+            if (updatedReview == null)
+                return BadRequest(ModelState);
+
+            if (reviewId != updatedReview.Id)
+                return BadRequest(ModelState);
+
+            if (!_reviewRepository.ReviewExists(reviewId))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var reviewMap = _mapper.Map<Review>(updatedReview);
+
+            if (!_reviewRepository.UpdateReview(reviewMap))
+            {
+                ModelState.AddModelError("", "went wrong updating review");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{reviewId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReview(int reviewId)
+        {
+            if (!_reviewRepository.ReviewExists(reviewId))
+            {
+                return NotFound();
+            }
+
+            var reviewToDelete = _reviewRepository.GetReview(reviewId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_reviewRepository.DeleteReview(reviewToDelete))
+            {
+                ModelState.AddModelError("", " went wrong deleting owner");
+            }
+
+            return NoContent();
+        }
+
+        
+        [HttpDelete("/DeleteReviewsByReviewer/{reviewerId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReviewsByReviewer(int commentatorId)
+        {
+            if (!_CommentatorRepository.CommentatorExists(commentatorId)) 
+                return NotFound();
+
+            var reviewsToDelete = _CommentatorRepository
+                .GetReviewsByCommentator(commentatorId).ToList();
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            if (!_reviewRepository.DeleteReviews(reviewsToDelete))
+            {
+                ModelState.AddModelError("", "error deleting reviews");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
 
     }
 }

@@ -49,6 +49,12 @@ namespace Api_ReviewApp.Repository
 
         }
 
+        public bool DeletePokemon(Pokemon pokemon)
+        {
+            _datacontext.Remove(pokemon);
+            return Save();
+        }
+
         public Pokemon GetPokemonById (int id)
         {
             return _datacontext.Pokemon
@@ -92,6 +98,12 @@ namespace Api_ReviewApp.Repository
         {
             var saved = _datacontext.SaveChanges();
             return saved > 0;
+        }
+
+        public bool UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+        {
+            _datacontext.Update(pokemon);
+            return Save(); ;
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Api_ReviewApp.Migrations
 {
-    public partial class initial : Migration
+    public partial class initial2commentdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +20,20 @@ namespace Api_ReviewApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Commentators",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Commentators", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,20 +61,6 @@ namespace Api_ReviewApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pokemon", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reviewers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviewers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,22 +118,22 @@ namespace Api_ReviewApp.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    ReviewerId = table.Column<int>(type: "int", nullable: false),
+                    CommentatorId = table.Column<int>(type: "int", nullable: false),
                     PokemonId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_Pokemon_PokemonId",
-                        column: x => x.PokemonId,
-                        principalTable: "Pokemon",
+                        name: "FK_Reviews_Commentators_CommentatorId",
+                        column: x => x.CommentatorId,
+                        principalTable: "Commentators",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_Reviewers_ReviewerId",
-                        column: x => x.ReviewerId,
-                        principalTable: "Reviewers",
+                        name: "FK_Reviews_Pokemon_PokemonId",
+                        column: x => x.PokemonId,
+                        principalTable: "Pokemon",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -178,14 +178,14 @@ namespace Api_ReviewApp.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reviews_CommentatorId",
+                table: "Reviews",
+                column: "CommentatorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_PokemonId",
                 table: "Reviews",
                 column: "PokemonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ReviewerId",
-                table: "Reviews",
-                column: "ReviewerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -206,10 +206,10 @@ namespace Api_ReviewApp.Migrations
                 name: "Owners");
 
             migrationBuilder.DropTable(
-                name: "Pokemon");
+                name: "Commentators");
 
             migrationBuilder.DropTable(
-                name: "Reviewers");
+                name: "Pokemon");
 
             migrationBuilder.DropTable(
                 name: "Countries");

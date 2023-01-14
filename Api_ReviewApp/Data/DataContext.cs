@@ -16,7 +16,7 @@ namespace Api_ReviewApp.Data
     public DbSet<Owner> Owners { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Review> Reviews { get; set; }
-    public DbSet<Reviewer> Reviewers { get; set; }
+    public DbSet<Commentator> Commentators { get; set; }
     public DbSet<PokemonCategory> PokemonCategories { get; set; }
     public DbSet<PokemonOwner> PokemonOwners { get; set; }
 

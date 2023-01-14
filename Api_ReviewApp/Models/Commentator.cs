@@ -1,6 +1,6 @@
 ﻿namespace Api_ReviewApp.Models
 {
-    public class Reviewer
+    public class Commentator
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

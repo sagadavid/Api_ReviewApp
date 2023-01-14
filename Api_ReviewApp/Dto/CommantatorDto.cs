@@ -1,6 +1,6 @@
 ﻿namespace Api_ReviewApp.Dto
 {
-    public class ReviewerDto
+    public class CommentatorDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

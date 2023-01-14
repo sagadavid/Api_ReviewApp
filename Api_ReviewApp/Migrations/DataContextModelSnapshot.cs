@@ -39,6 +39,27 @@ namespace Api_ReviewApp.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Api_ReviewApp.Models.Commentator", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Commentators");
+                });
+
             modelBuilder.Entity("Api_ReviewApp.Models.Country", b =>
                 {
                     b.Property<int>("Id")
@@ -144,13 +165,13 @@ namespace Api_ReviewApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CommentatorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReviewerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -163,32 +184,11 @@ namespace Api_ReviewApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CommentatorId");
+
                     b.HasIndex("PokemonId");
 
-                    b.HasIndex("ReviewerId");
-
                     b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("Api_ReviewApp.Models.Reviewer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Reviewers");
                 });
 
             modelBuilder.Entity("Api_ReviewApp.Models.Owner", b =>
@@ -242,26 +242,31 @@ namespace Api_ReviewApp.Migrations
 
             modelBuilder.Entity("Api_ReviewApp.Models.Review", b =>
                 {
+                    b.HasOne("Api_ReviewApp.Models.Commentator", "Commentator")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CommentatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Api_ReviewApp.Models.Pokemon", "Pokemon")
                         .WithMany("Reviews")
                         .HasForeignKey("PokemonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Api_ReviewApp.Models.Reviewer", "Reviewer")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ReviewerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Commentator");
 
                     b.Navigation("Pokemon");
-
-                    b.Navigation("Reviewer");
                 });
 
             modelBuilder.Entity("Api_ReviewApp.Models.Category", b =>
                 {
                     b.Navigation("PokemonCategories");
+                });
+
+            modelBuilder.Entity("Api_ReviewApp.Models.Commentator", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Api_ReviewApp.Models.Country", b =>
@@ -280,11 +285,6 @@ namespace Api_ReviewApp.Migrations
 
                     b.Navigation("PokemonOwners");
 
-                    b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("Api_ReviewApp.Models.Reviewer", b =>
-                {
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

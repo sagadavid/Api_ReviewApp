@@ -2,6 +2,7 @@
 using Api_ReviewApp.Interfaces;
 using Api_ReviewApp.Models;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -24,6 +25,12 @@ namespace Api_ReviewApp.Repository
         public bool CreateCountry(Country country)
         {
             _datacontext.Add(country);
+            return Save();
+        }
+
+        public bool DeleteCountry(Country country)
+        {
+            _datacontext.Remove(country);
             return Save();
         }
 
@@ -58,6 +65,12 @@ namespace Api_ReviewApp.Repository
         {
             var saved = _datacontext.SaveChanges();
             return saved > 0;
+        }
+
+        public bool UpdateCountry(Country country)
+        {
+            _datacontext.Update(country);
+            return Save();
         }
     }
 }
