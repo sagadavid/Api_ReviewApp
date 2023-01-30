@@ -13,8 +13,10 @@ namespace Api_ReviewApp.Helper
             //define source and destination map points before using imapper
             //dto2category mapping is required for post/create methods
 
-            CreateMap<Pokemon, PokemonDto>();
-            CreateMap<PokemonDto, Pokemon>();
+            //CreateMap<Pokemon, PokemonDto>();
+            //CreateMap<PokemonDto, Pokemon>();
+                    //reversemap does the same thing
+             CreateMap<Pokemon, PokemonDto>().ReverseMap();
            
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
